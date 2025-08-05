@@ -1,28 +1,30 @@
 const express = require("express");
-const app = express();
 const cors = require("cors");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 
 dotenv.config();
+
+const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Connect DB
-const connectDB = require("./config/db");
-connectDB();
+// Connect MongoDB
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log("MongoDB connected"))
+.catch((err) => console.error("Mongo error:", err));
 
 // Routes
-const authRoutes = require("./routes/authRoutes.js");
-const productRoutes = require("./routes/productRoutes.js");
+app.get("/api/products", (req, res) => {
+  res.json({ message: "Product list would be here." });
+});
 
-app.use("/api/auth", authRoutes);
-app.use("/api/products", productRoutes);
+// ✅ DO NOT CALL app.listen() — Vercel handles it
 
-// Export instead of listen
-module.exports = app;
-
-const { createServer } = require("@vercel/node");
-
-const server = createServer(app);
-
+app.listen(process.env.PORT,()=>{
+   console.log('Server Started');
+   
+})
