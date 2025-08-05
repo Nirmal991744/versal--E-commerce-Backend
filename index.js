@@ -22,6 +22,10 @@ app.get("/api/products", (req, res) => {
   res.json({ message: "Product list would be here." });
 });
 
+app.get('/',(req,res)=>{
+   res.send('E-commerce-api');
+})
+
 // ✅ DO NOT CALL app.listen() — Vercel handles it
 
 app.listen(process.env.PORT,()=>{
